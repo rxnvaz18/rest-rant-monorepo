@@ -100,8 +100,21 @@ function PlaceDetails() {
 			)
 		})
 	}
+	let placeActions = null
 
-
+	if (currentUser?.role === 'admin') {
+		placeActions = (
+			<>
+				<a className="btn btn-warning" onClick={editPlace}>
+					Edit
+				</a>
+				<button type="submit" className="btn btn-danger" onClick={deletePlace}>
+					Delete
+				</button>
+			</>
+		)
+	}
+	
 	return (
 		<main>
 			<div className="row">
@@ -128,6 +141,7 @@ function PlaceDetails() {
 						Serving {place.cuisines}.
 					</h4>
 					<br />
+					{placeActions}
 					<a className="btn btn-warning" onClick={editPlace}>
 						Edit
 					</a>{` `}
