@@ -1,8 +1,23 @@
 const router = require('express').Router()
 const db = require("../models")
 const bcrypt = require('bcrypt')
+const jwt = require('json-web-token')
 
 const { User } = db
+
+router.get('/profile', async (req, res) => {
+    try {
+        let user = await User.findOne({
+            where: {
+                userId: user
+            }
+        })
+        res.json(user)
+    } catch {
+        res.json(null)
+    }
+})
+
 
 router.post('/', async (req, res) => {
     
@@ -15,8 +30,9 @@ router.post('/', async (req, res) => {
             message: `Could not find a user with the provided username and password` 
         })
     } else {
-        res.json({ user })
-    }
+        const result = await jwt.encode(process.env.JWT_SECRET, { id: user.userId })           
+        res.json({ user: user, token: result.value })           
+       }
 })
 
 
@@ -24,4 +40,5 @@ module.exports = router
 
   
 
-  
+
+    
